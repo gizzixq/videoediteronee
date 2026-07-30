@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Editor Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #05070c;
+            --navy-deep: #0a1428;
+            --navy: #101f3d;
+            --navy-panel: #142545;
+            --blue-accent: #3b6fd1;
+            --blue-light: #7ea6f0;
+            --border: #223564;
+            --text: #e9edf7;
+            --text-dim: #8a97b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* LANG TOGGLE */
+        .lang-toggle {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            background: var(--navy-panel);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 4px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+            user-select: none;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.08em;
+        }
+
+        .lang-toggle .lang-option {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85em;
+            color: var(--text-dim);
+            transition: color 0.25s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .lang-toggle .lang-option.active {
+            color: #ffffff;
+        }
+
+        .lang-toggle .lang-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: linear-gradient(135deg, var(--blue-accent), var(--blue-light));
+            border-radius: 999px;
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+            z-index: 1;
+        }
+
+        .lang-toggle.eng .lang-slider {
+            transform: translateX(100%);
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(160deg, var(--navy-deep) 0%, var(--black) 100%);
+            padding: 50px 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .role-label {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.35em;
+            font-size: 0.9em;
+            color: var(--blue-light);
+            margin-bottom: 14px;
+        }
+
+        .name-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.4em;
+            letter-spacing: 0.04em;
+            color: var(--text);
+            text-shadow: 0 0 30px rgba(59, 111, 209, 0.35);
+            margin-bottom: 24px;
+        }
+
+        .photo-placeholder img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid var(--blue-accent);
+            object-fit: cover;
+            box-shadow: 0 0 25px rgba(59, 111, 209, 0.45);
+        }
+
+        /* BODY */
+        .content {
+            display: flex;
+            flex: 1;
+            padding: 50px 20px;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .wishes {
+            flex: 1;
+            background: var(--navy-panel);
+            padding: 30px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .wishes h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em;
+            color: var(--blue-light);
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .wishes p {
+            font-size: 1.05em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: var(--text-dim);
+        }
+
+        .wishes strong {
+            color: var(--text);
+        }
+
+        /* REEL GRID — 4 videos */
+        .photo-container {
+            flex: 0 0 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .reel-label {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.25em;
+            font-size: 0.85em;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            align-self: flex-start;
+        }
+
+        .photo-frame {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--navy);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 2px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .reel-cell {
+            position: relative;
+            overflow: hidden;
+            background: var(--navy-deep);
+        }
+
+        .reel-cell video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .reel-cell .reel-index {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 0.1em;
+            color: var(--blue-light);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* FOOTER */
+        footer {
+            background: linear-gradient(160deg, var(--navy-deep) 0%, var(--black) 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: var(--text-dim);
+        }
+
+        .footer-content p {
+            margin-bottom: 6px;
+        }
+
+        .footer-content strong {
+            color: var(--text);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .photo-container {
+                flex: none;
+                width: 100%;
+                max-width: 380px;
+                margin: 0 auto;
+            }
+
+            .name-text {
+                font-size: 2.2em;
+            }
+
+            .lang-toggle {
+                top: 12px;
+                left: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LANG TOGGLE -->
+    <div class="lang-toggle" id="langToggle" onclick="toggleLang()">
+        <div class="lang-slider"></div>
+        <div class="lang-option active" id="optRu">RU</div>
+        <div class="lang-option" id="optEng">ENG</div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="role-label" data-ru="ВИДЕОМОНТАЖЁР" data-eng="VIDEO EDITOR">ВИДЕОМОНТАЖЁР</div>
+        <div class="name-text">Batyr Zhora</div>
+        <div class="photo-placeholder">
+            <img src="ChatGPT Image 31 июл. 2026 г., 01_51_25.png" alt="Profile Photo">
+        </div>
+    </header>
+
+    <!-- BODY -->
+    <div class="content">
+        <div class="wishes">
+            <h2 data-ru="Обо мне" data-eng="About Me">Обо мне</h2>
+            <p data-ru='🎬 Я работаю <strong>видеомонтажёром более 5 лет, 2 из которых — на телеканале Zhetysu</strong>, создавая музыкальные клипы, рекламу и контент для соцсетей.'
+               data-eng='🎬 I have been working as a <strong>video editor for over 5 years, 2 of which are at the Zhetysu TV channel</strong>, creating music videos, commercials, and social media content.'>
+               🎬 Я работаю <strong>видеомонтажёром более 5 лет, 2 из которых — на телеканале Zhetysu</strong>, создавая музыкальные клипы, рекламу и контент для соцсетей.
+            </p>
+            <p data-ru='🖥️ Профессионально работаю в <strong>Adobe Premiere Pro, After Effects и DaVinci Resolve</strong>.'
+               data-eng='🖥️ I work professionally in <strong>Adobe Premiere Pro, After Effects, and DaVinci Resolve</strong>.'>
+               🖥️ Профессионально работаю в <strong>Adobe Premiere Pro, After Effects и DaVinci Resolve</strong>.
+            </p>
+            <p data-ru='🎨 Владею цветокоррекцией, моушн-дизайном, звуковым дизайном и монтажом под разные форматы (9:16, 16:9, 1:1).'
+               data-eng='🎨 Skilled in color grading, motion design, sound design, and editing for multiple aspect ratios (9:16, 16:9, 1:1).'>
+               🎨 Владею цветокоррекцией, моушн-дизайном, звуковым дизайном и монтажом под разные форматы (9:16, 16:9, 1:1).
+            </p>
+            <p data-ru='⚡ Быстрый, внимательный к деталям, фокусируюсь на плавном темпе и динамичном монтаже.'
+               data-eng='⚡ Fast, detail-oriented, and focused on creating smooth pacing and dynamic edits.'>
+               ⚡ Быстрый, внимательный к деталям, фокусируюсь на плавном темпе и динамичном монтаже.
+            </p>
+            <p data-ru='🌐 Создавал контент для таких блогеров, как <strong>Eras</strong> и <strong>raychez</strong>.'
+               data-eng="🌐 I've created content for creators such as <strong>Eras</strong> and <strong>raychez</strong>.">
+               🌐 Создавал контент для таких блогеров, как <strong>Eras</strong> и <strong>raychez</strong>.
+            </p>
+            <p data-ru='📩 Ниже — четыре избранных проекта из моего портфолио.'
+               data-eng='📩 Below are four selected projects from my portfolio.'>
+               📩 Ниже — четыре избранных проекта из моего портфолио.
+            </p>
+        </div>
+
+        <div class="photo-container">
+            <div class="reel-label" data-ru="ПОРТФОЛИО" data-eng="PORTFOLIO">ПОРТФОЛИО</div>
+            <div class="photo-frame">
+                <div class="reel-cell">
+                    <span class="reel-index">01</span>
+                    <video src="IMG_4844.MP4" controls muted preload="metadata"></video>
+                </div>
+                <div class="reel-cell">
+                    <span class="reel-index">02</span>
+                    <video src="0703 (1).mp4" controls muted preload="metadata"></video>
+                </div>
+                <div class="reel-cell">
+                    <span class="reel-index">03</span>
+                    <video src="0703.mp4" controls muted preload="metadata"></video>
+                </div>
+                <div class="reel-cell">
+                    <span class="reel-index">04</span>
+                    <video src="0708.mp4" controls muted preload="metadata"></video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <p><strong data-ru="Контакты" data-eng="Contact">Контакты</strong></p>
+            <p>Telegram: https://t.me/Sancheus71</p>
+            <p>Email: batyrzora@gmail.com</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentLang = 'ru';
+
+        function toggleLang() {
+            currentLang = currentLang === 'ru' ? 'eng' : 'ru';
+            applyLang(currentLang);
+        }
+
+        function applyLang(lang) {
+            const toggle = document.getElementById('langToggle');
+            const optRu = document.getElementById('optRu');
+            const optEng = document.getElementById('optEng');
+
+            if (lang === 'eng') {
+                toggle.classList.add('eng');
+                optEng.classList.add('active');
+                optRu.classList.remove('active');
+                document.documentElement.lang = 'en';
+            } else {
+                toggle.classList.remove('eng');
+                optRu.classList.add('active');
+                optEng.classList.remove('active');
+                document.documentElement.lang = 'ru';
+            }
+
+            document.querySelectorAll('[data-ru][data-eng]').forEach(el => {
+                const value = lang === 'eng' ? el.getAttribute('data-eng') : el.getAttribute('data-ru');
+                el.innerHTML = value;
+            });
+        }
+
+        // инициализация на случай, если браузер языка пользователя английский
+        applyLang(currentLang);
+    </script>
+</body>
+</html>
